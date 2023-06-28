@@ -89,9 +89,6 @@ function startGame() {
             const emoji = emojis[col];
             const posX = elementsSize.toFixed(0) * (colI + 1);
             const posY = elementsSize.toFixed(0) * (rowI + 1);
-
-
-
             
             if ( col == 'O') {
                 if (!playerPosition.x && !playerPosition.y) {
