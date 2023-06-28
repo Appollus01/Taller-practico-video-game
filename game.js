@@ -6,7 +6,9 @@ const btnLeft = document.querySelector('#left');
 const btnRight = document.querySelector('#right');
 const btnDown = document.querySelector('#down');
 const spanLives = document.querySelector('#lives');
-const spanTime = document.querySelector('#time')
+const spanTime = document.querySelector('#time');
+const spanRecord = document.querySelector('#record');
+const spanResult = document.querySelector('#result');
 
 let canvasSize;
 let elementsSize;
@@ -63,7 +65,10 @@ function startGame() {
     if (!timeStart){
         timeStart = Date.now();
         timeInterval = setInterval(showTime, 100);
+        showRecord();
     }
+
+
 
     const mapRows = map.trim().split('\n'); // se crea el primer arreglo
     //trim quita los espacios del arreglo al inicio y al final, 
@@ -151,6 +156,22 @@ function levelFail() {
 function gameWin(){
     console.log('gananste');
     clearInterval(timeInterval);
+
+    const recordTime = localStorage.getItem('record_time');
+    const playerTime = ((Date.now() - timeStart)/1000).toFixed(0);
+
+    if (recordTime) {
+        
+        if (recordTime >= playerTime) {
+            localStorage.setItem('record_time', playerTime);
+            spanResult.innerHTML = '¡Superaste el record!';
+        } else {
+            spanResult.innerHTML = 'No superaste el record.';
+        }
+    } else {
+        localStorage.setItem('record_time', playerTime);
+        spanResult.innerHTML = 'Primera vez? Muy bien, ahora trata de superar el record.';
+    }
 }
 
 function showLives () {
@@ -161,7 +182,11 @@ function showLives () {
 }
 
 function showTime(){
-    spanTime.innerHTML = Date.now() - timeStart;
+    spanTime.innerHTML = ((Date.now() - timeStart)/1000).toFixed(0);
+}
+
+function showRecord(){
+    spanRecord.innerHTML = localStorage.getItem('record_time');
 }
 
 window.addEventListener('keydown', moveByKeys);
