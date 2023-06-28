@@ -42,10 +42,15 @@ function setCanvasSize () {
         canvasSize = window.innerHeight * 0.8;
     }
 
+    canvasSize = Number(canvasSize.toFixed(0));
+
     canvas.setAttribute('width', canvasSize);
     canvas.setAttribute('height', canvasSize);
 
     elementsSize = canvasSize / 10;
+
+    playerPosition.x = undefined;
+    playerPosition.y = undefined;
 
     startGame();
 }
@@ -68,8 +73,6 @@ function startGame() {
         showRecord();
     }
 
-
-
     const mapRows = map.trim().split('\n'); // se crea el primer arreglo
     //trim quita los espacios del arreglo al inicio y al final, 
     // split crea un arreglo a partir de un string, el inicio y el final de cada arreglo es cuando detecta un salto de linea \n
@@ -87,7 +90,6 @@ function startGame() {
             const posX = elementsSize * (colI + 1);
             const posY = elementsSize * (rowI + 1);
             
-
             if ( col == 'O') {
                 if (!playerPosition.x && !playerPosition.y) {
                     playerPosition.x = posX;
