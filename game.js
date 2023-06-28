@@ -42,7 +42,9 @@ function setCanvasSize () {
         canvasSize = window.innerHeight * 0.8;
     }
 
-    canvasSize = Number(canvasSize.toFixed(0));
+    canvasSize = canvasSize;
+
+    console.log("canvas size " + canvasSize)
 
     canvas.setAttribute('width', canvasSize);
     canvas.setAttribute('height', canvasSize);
@@ -77,8 +79,7 @@ function startGame() {
     //trim quita los espacios del arreglo al inicio y al final, 
     // split crea un arreglo a partir de un string, el inicio y el final de cada arreglo es cuando detecta un salto de linea \n
     const mapRowCols = mapRows.map(row => row.trim().split('')); // se crea el segundo arreglo
-    console.log(map, mapRows);
-
+    
     showLives();
 
     enemyPositions = [];
@@ -87,18 +88,21 @@ function startGame() {
     mapRowCols.forEach((row, rowI) => {
         row.forEach((col, colI) => {
             const emoji = emojis[col];
-            const posX = elementsSize.toFixed(0) * (colI + 1);
-            const posY = elementsSize.toFixed(0) * (rowI + 1);
-            
+            const posX = elementsSize * (colI + 1);
+            const posY = elementsSize * (rowI + 1);
+           // console.log("posx y posy " + posX, posY)
+            console.log(`posx ${posX} y posy ${posY}`)
             if ( col == 'O') {
                 if (!playerPosition.x && !playerPosition.y) {
                     playerPosition.x = posX;
                     playerPosition.y = posY;
+                    console.log("player position " + (playerPosition.x) + " " + (playerPosition.y));
                 }
-                console.log({playerPosition});
+                console.log("player position 2 " + (playerPosition.x) + " " + (playerPosition.y));
             } else if (col == 'I') {
                 giftPosition.x = posX;
                 giftPosition.y = posY;
+                console.log("giftposition " + giftPosition.x, giftPosition.y)
             } else if (col == 'X') {
                 enemyPositions.push({
                     x: posX,
@@ -114,8 +118,8 @@ function startGame() {
 }
 
 function movePlayer() {
-    const giftCollisionX = playerPosition.x.toFixed(0) == giftPosition.x.toFixed(0);
-    const giftCollisionY = playerPosition.y.toFixed(0) == giftPosition.y.toFixed(0);
+    const giftCollisionX = Number(playerPosition.x).toFixed(3) == Number(giftPosition.x).toFixed(3);
+    const giftCollisionY = Number(playerPosition.y).toFixed(3) == Number(giftPosition.y).toFixed(3);
     const giftCollision = giftCollisionX && giftCollisionY;
 
     if (giftCollision) {
@@ -123,8 +127,8 @@ function movePlayer() {
     }
 
     const enemyCollision = enemyPositions.find(enemy => {
-        const enemyCollisionX = enemy.x.toFixed(0) == playerPosition.x.toFixed(0);
-        const enemyCollisionY = enemy.y.toFixed(0) == playerPosition.y.toFixed(0);
+        const enemyCollisionX = Number(enemy.x).toFixed(3) == Number(playerPosition.x).toFixed(3);
+        const enemyCollisionY = Number(enemy.y).toFixed(3) == Number(playerPosition.y).toFixed(3);
         return enemyCollisionX && enemyCollisionY;
     })
     if (enemyCollision) {
@@ -212,7 +216,7 @@ function moveByKeys(event){
 
 function moveUp() {
     if ((playerPosition.y - elementsSize) < elementsSize) {
-
+        console.log('OUT');
     } else {
         playerPosition.y -= elementsSize;
         startGame();
@@ -221,7 +225,7 @@ function moveUp() {
 
 function moveLeft() {
     if ((playerPosition.x - elementsSize) < elementsSize) {
-
+        console.log('OUT');
     } else {
         playerPosition.x -= elementsSize;
         startGame();
@@ -229,8 +233,11 @@ function moveLeft() {
 }
 
 function moveRight( ) {
-    if ((playerPosition.x + elementsSize) > canvasSize) {
-
+    if ((playerPosition.x + elementsSize) >= canvasSize) {
+        console.log('OUT');
+        console.log("player position x "+ playerPosition.x)
+        console.log("element size "+ elementsSize)
+        console.log("canvas size "+ canvasSize)
     } else {
         playerPosition.x += elementsSize;
         startGame();
@@ -239,7 +246,7 @@ function moveRight( ) {
 
 function moveDown() {
     if ((playerPosition.y + elementsSize) > canvasSize) {
-
+        console.log('OUT');
     } else {
         playerPosition.y += elementsSize;
         startGame();
