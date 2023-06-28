@@ -5,6 +5,7 @@ const btnUp = document.querySelector('#up');
 const btnLeft = document.querySelector('#left');
 const btnRight = document.querySelector('#right');
 const btnDown = document.querySelector('#down');
+const spanLives = document.querySelector('#lives')
 
 let canvasSize;
 let elementsSize;
@@ -57,8 +58,10 @@ function startGame() {
     const mapRows = map.trim().split('\n'); // se crea el primer arreglo
     //trim quita los espacios del arreglo al inicio y al final, 
     // split crea un arreglo a partir de un string, el inicio y el final de cada arreglo es cuando detecta un salto de linea \n
-    console.log(map, mapRows)
-    const mapRowCols = mapRows.map(row => row.trim().split('')) // se crea el segundo arreglo
+    const mapRowCols = mapRows.map(row => row.trim().split('')); // se crea el segundo arreglo
+    console.log(map, mapRows);
+
+    showLives();
 
     enemyPositions = [];
     game.clearRect(0, 0, canvasSize, canvasSize);
@@ -123,8 +126,10 @@ function levelWin() {
 
 function levelFail() {
     lives--;
+    
     if (lives <= 0) {
         level = 0;
+        lives = 3;
     }  
     
     playerPosition.x = undefined;
@@ -134,6 +139,13 @@ function levelFail() {
 
 function gameWin(){
     console.log('gananste');
+}
+
+function showLives () {
+    const heartArray = Array(lives).fill(emojis['HEART']); 
+
+    spanLives.innerHTML = "";
+    heartArray.forEach(heart => spanLives.append(heart));
 }
 
 window.addEventListener('keydown', moveByKeys);
